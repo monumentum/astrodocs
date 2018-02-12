@@ -22,7 +22,7 @@ const siteConfig = {
   baseUrl: '/astrostack/' /* base url for your project */,
   projectName: 'astrostack',
   headerLinks: [
-    {doc: 'doc1', label: 'Docs'},
+    {doc: 'astronode-qs-1', label: 'Astronode'},
     {doc: 'doc4', label: 'API'},
     {page: 'help', label: 'Help'},
     {blog: true, label: 'Blog'},
