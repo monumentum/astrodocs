@@ -1,12 +1,10 @@
 {
   "docs": {
     "Quick Start": [
-      "astronode-qs-1"
+      "astronode-qs-1",
+      "astronode-qs-2",
+      "astronode-qs-3"
     ],
-    "First Category": ["doc2"],
-    "Second Category": ["doc3"]
-  },
-  "docs-other": {
-    "First Category": ["doc4", "doc5"]
+    "Advanced Guide": ["astronode-ag-1"]
   }
 }
