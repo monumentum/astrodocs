@@ -3,7 +3,8 @@
     "Quick Start": [
       "astronode-qs-1",
       "astronode-qs-2",
-      "astronode-qs-3"
+      "astronode-qs-3",
+      "astronode-qs-4"
     ],
     "Advanced Guide": ["astronode-ag-1"]
   }
