@@ -23,7 +23,6 @@ const siteConfig = {
   projectName: 'astrostack',
   headerLinks: [
     {doc: 'astronode-qs-1', label: 'Astronode'},
-    {doc: 'doc4', label: 'API'},
     {page: 'help', label: 'Help'},
     {blog: true, label: 'Blog'},
   ],
