@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+- '7'
+- '8'
+cache:
+  directories:
+    - node_modules
+script:
+  - cd website
+  - npm run build
+deploy:
+  provider: surge
+  project: "./website/build/astrostack"
+  domain: "astrodocs.surge.sh"
+  on: master
+env:
+  global:
+    secure: GMmcyhZllEEQOkR4DmSqvQWNJfUPoe1Kr/sx15zhQGPELMGH8PD/qn+PdM4v0f/oNWrQlwzWNudTTuioVNfv4k3rTToszpOFMwiqfkxgtVRzhlAC3/Qlatvhzac/6KB8Alvv1G+xqTtqobOO+fbkIW21+EUAZOiCa6qRJl5Gu4CVV4S7mzEGOaThLsufkoxmentYTE5jaEzvYSBuZpRC+Hqtqz8r7JZrCSjba9N9p/AnkugZss5qVSX0z9rdZ/TpLrz49AV2B6+gO4PyqFpbpFbK+odP+mWOGmdDT5PBplN9t2mnJIGf+OJi7Qnldvlj2wwqSb8CKWqgzmwfFG+mc9Oqr5xNfU6q2HBwTXk5sXtJsUeQ1iNWGuwuj/9+I6rr5L4UvleC0KfSiPG0Mkf9OWxRf/ajtBNbyRxLoz1T/F3rEIsXp/ogBR3bqv7DzvvW6GgCYpPLYemTQbSkS5xP9RCDG+X4NZb7pKy5uQrwxN0s0GFoHE7th76JGK3TYhw6xRCOqJECBegsz/OTFU8JlQeTQfjlkKHfsICmdtNZwsf2tGOEl/XONZsN0Zn80geSeebLdfgvfF/EE69Vvqp0DP9YJPUI8uDJJZdUyOyZw7QeiwKvkcauQztrz/gWIDSQEjWoHwOafDKtlgNd7ZZH0DMZHWOy+7e46expA9IFNDs=
