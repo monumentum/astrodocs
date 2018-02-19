@@ -9,11 +9,11 @@ script:
   - cd website
   - npm install
   - npm run build
-  - ls build
 deploy:
   provider: surge
   project: "./website/build/astrostack"
   domain: "astrodocs.surge.sh"
+  skip_cleanup: true
   on: master
 env:
   global:
