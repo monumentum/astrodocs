@@ -19,7 +19,7 @@ const siteConfig = {
   title: 'Astrostack' /* title for your website */,
   tagline: 'A javascript stack to build and maintain APIs',
   url: 'https://facebook.github.io' /* your website url */,
-  baseUrl: '/astrostack/' /* base url for your project */,
+  baseUrl: '/' /* base url for your project */,
   projectName: 'astrostack',
   headerLinks: [
     {doc: 'astronode-qs-1', label: 'Astronode'},

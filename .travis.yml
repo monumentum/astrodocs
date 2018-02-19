@@ -9,6 +9,7 @@ script:
   - cd website
   - npm install
   - npm run build
+  - ls build
 deploy:
   provider: surge
   project: "./website/build/astrostack"
