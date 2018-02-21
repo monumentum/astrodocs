@@ -6,6 +6,10 @@
       "astronode-qs-3",
       "astronode-qs-4"
     ],
-    "Advanced Guide": ["astronode-ag-1"]
+    "Advanced Guide": [
+      "astronode-ag-1",
+      "astronode-ag-2",
+      "astronode-ag-3"
+    ]
   }
 }
