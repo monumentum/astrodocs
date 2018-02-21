@@ -1,109 +1,51 @@
 ---
-id: astronode-ag-1
-title: Complex Models
-sidebar_label: Manage Complex Models
+id: astronode-ag-3
+title: Astronode Parser Rules
+sidebar_label: Rules of Parsing
 ---
 
-Now that we are introduced with Routing File, let's create a custom controller! To make it, we will upgrade our start project to Medium copy :)
+In last section we talk about 2 concepts of astronode `Request Chain` and `Plugin Methods`, in this section we are talk a little about plugins, controllers, middlewares and how parsing works for the Route Config.
 
-## New Modules
-Let's create an post module: `./node_modules/.bin/astronode module post`
+## Request Chain
+Every Route Structure, could receive your request callback in 4 ways:
 
-**post/model.js**
 ```javascript
-const { SchemaTypes } = require('mongoose');
+{
+    // As a string
+    "get": "mymethod",
 
-module.exports = {
-    slug: {
-        type: String,
-        required: true,
-        unique: true,
+    // As an array
+    "post": ["mymethod"],
+
+    // As a string into call prop
+    "put": {
+        call: "mymethod"
     },
-    author: {
-        type: SchemaTypes.ObjectId,
-        ref: 'user',
-        required: true
-    },
-    body: {
-        type: String,
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now,
+
+    // As an array into call prop
+    "delete": {
+        call: [ "mymethod" ]
     }
 }
 ```
 
-## Complex Schemas
-You will need to handle values and change it or create custom methods to some instances. Example: In user model you need hash the password before save in your database, in post you need to create a slug and in a future comment model you will need a custom method to get commends by POST id. Our `astronode-mongoose-plugin` supports you to export a Mongoose Schema in the place of a simple object.
+When we use an array, we are declaring a `Request Chain`, by default astronode works with a base handle at the end of each request that return an error in case of `.catch` or an json in case of `success`, we can construct a chain of promises waiting that in the end a value be dispatched to the end user.
+
+### Promise structure
+The first call will always receive an req parameter, the other ones will receive the return of the first call, example:
 
 ```javascript
-const { SchemaTypes, Schema } = require('mongoose');
+const firstCall = req => {
+    return 1
+}
 
-const PostSchema = new Schema({
-    slug: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    author: {
-        type: SchemaTypes.ObjectId,
-        ref: 'user',
-        required: true
-    },
-    body: {
-        type: String,
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now,
-    }
-});
-
-PostSchema.pre('save', post => {
-    if (post.title) {
-        post.title = slugfy(post.title);
-    }
-
-    next();
-});
-
-module.exports = PostSchema;
+const secondCall = valueFromFirstCall => {
+    // valueFromFirstCall === 1;
+    return value
+}
 ```
 
-## Slug as id?
-In theory you will use the slug in your URL and will hit the API with it to get the post, so, we need a custom method `getBySlug`:
+This structure could be use to make webhooks, or threat values as a plugin/middleware (like our post example in last section).
 
-```javascript
-PostSchema.static('getBySlug', slug => {
-    return PostSchema.findOne({ slug }).lean().exec()
-});
-```
-
-Now we can override our method `getById` in defaultAPI by our `getBySlug`:
-
-```javascript
-    "/post": {
-        "defaultAPI": {
-            "module": "post"
-        },
-        "routes": {
-            "/:id": {
-                "get": [
-                    "!express.extract:id",
-                    "!mongoose.models.post.getBySlug"
-                ]
-            }
-        }
-    }
-```
-
-Here we are presented to two concepts of astronode: `Request Chain` and `Plugin Methods`.
+## Lookup Order
+When we map functions inside Route File as an string exists a lookup order. If we add a string in a place that refer to a controller, they will look to the controllers, if we put into a middleware place, it will look for a middleware, but if we use the notation `!` we are afirming that this guy is a **plugin**. So `Plugin Methods` is any method that could be accessed by `!` reference, like `mongoose.methods` that export all interfaced used to create defaultAPIs.

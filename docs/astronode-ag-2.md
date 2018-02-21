@@ -1,5 +1,5 @@
 ---
-id: astronode-ag-1
+id: astronode-ag-2
 title: Complex Models
 sidebar_label: Manage Complex Models
 ---
@@ -79,12 +79,26 @@ PostSchema.pre('save', post => {
 module.exports = PostSchema;
 ```
 
-## Slug as id?
-In theory you will use the slug in your URL and will hit the API with it to get the post, so, we need a custom method `getBySlug`:
+## Static Methods
+We will need to methods during our calls, first on is `getBySlug` to get the post using the slug in the URL, and second one, is the `toggleLike` to add/remove like from an post.
 
 ```javascript
 PostSchema.static('getBySlug', slug => {
     return PostSchema.findOne({ slug }).lean().exec()
+});
+
+PostSchema.static('toggleLike', ({ userId, postIs }) => {
+    return PostSchema.findById(postId).exec().then(post => {
+        const indexOfUser = post.likes.indexOf(userId);
+
+        if (~indexOfUser) {
+            post.likes.splice(indexOfUser, 1)
+        } else {
+            post.likes.push(userId);
+        }
+
+        return post.save();
+    });
 });
 ```
 
@@ -100,6 +114,12 @@ Now we can override our method `getById` in defaultAPI by our `getBySlug`:
                 "get": [
                     "!express.extract:id",
                     "!mongoose.models.post.getBySlug"
+                ]
+            }
+            "/like": {
+                "post": [
+                    "!express.extract:body",
+                    "!mongoose.models.post.toggleLike"
                 ]
             }
         }
